@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 
+//Credit: https://stackoverflow.com/a/21802936
 std::vector<unsigned char> readFileIntoVec(const std::string& filename) {
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile.is_open()) {

@@ -37,15 +37,17 @@ class BinaryFileReader {
             uint32_t length = 0;
             reader >> length;
             str.assign(reader.m_readPtr, reader.m_readPtr + length);
-            reader.m_readPtr += length;
+            incrementReader(length);
             return reader;
         }
 
     private:
+        void incrementReader(size_t amount);
+
         template<typename T>
         void readNumber(T& n) {
             std::memcpy(reinterpret_cast<char*>(&n), m_readPtr, sizeof(T));
-            m_readPtr += sizeof(T);
+            incrementReader(sizeof(T));
         }
 
         std::vector<unsigned char> m_buffer;

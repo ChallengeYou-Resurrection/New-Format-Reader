@@ -11,6 +11,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(SOURCES
 	src/main.cpp
 	src/Utilities.cpp
+	src/CYFileReader/BinaryFileReader.cpp 
+	src/CYFileReader/FileReader.cpp 
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

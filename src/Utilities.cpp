@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-std::vector<unsigned char> readFileIntoVec(const char* filename) {
+std::vector<unsigned char> readFileIntoVec(const std::string& filename) {
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile.is_open()) {
         std::cerr << "Unable to open " << filename << '\n';

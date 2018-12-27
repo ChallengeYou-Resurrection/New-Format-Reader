@@ -7,12 +7,16 @@
 
 
 namespace {
+    struct ObjectHeaderInfo {
+        ObjectID objectId;
+        uint32_t   numObjects;
+    };
     template <typename T>
     void print(const char* msg, const T& val) {
         std::cout << msg << ": <" << val << ">\n";
     }
 
-    uint8_t readObjectGroupHeader(BinaryFileReader& reader, CYLevel& level) {
+    ObjectHeaderInfo readObjectGroupHeader(BinaryFileReader& reader, CYLevel& level) {
         uint8_t     objectId;
         uint8_t     numProperties;
         uint32_t    numObjects;
@@ -20,7 +24,19 @@ namespace {
 
 
         level.propLayouts[objectId].reserve(numProperties);
-        level.objects    [objectId].reserve((size_t)numObjects);
+        switch ((ObjectID)objectId) {
+            case ObjectID::Wall:
+                level.walls.reserve((size_t)numObjects);
+                break;
+
+            case ObjectID::Floor:
+                break;
+
+            default:
+                level.objects[objectId].reserve((size_t)numObjects);
+                break;
+        }
+       
 
         for (int i = 0; i < numProperties; i++) {
             uint8_t propertyId;
@@ -28,7 +44,18 @@ namespace {
             level.propLayouts[objectId].push_back((PropertyType)propertyId);
         }
 
-        return objectId;
+        return {
+            (ObjectID)objectId, numObjects
+        };
+    }
+
+    void readLevelWalls(BinaryFileReader& reader, CYLevel& level, uint32_t numWalls) {
+        for (size_t i = 0; i < numWalls; i++) {
+            CYWall wall;
+
+
+            level.walls.push_back(wall);
+        }
     }
 } 
 
@@ -49,7 +76,18 @@ CYLevel loadLevel(const std::string& file) {
             >> level.theme 
             >> level.weather;
 
-    auto nextReadGroupId = readObjectGroupHeader(reader, level);
+    
+    auto headerInfo = readObjectGroupHeader(reader, level);
+    switch(headerInfo.objectId) {
+        case ObjectID::Wall:
+            break;
+
+        case ObjectID::Floor:
+            break;
+
+        default:
+            break;
+    }
 
     print("Version", (int)fileVersion);
     print("Game Name", level.levelName);
@@ -59,11 +97,11 @@ CYLevel loadLevel(const std::string& file) {
     print("Theme", (int)level.theme);
     print("Weather", (int)level.weather);
 
-    print("Group ID", (int)nextReadGroupId);
-    print("Num Properties", level.propLayouts[nextReadGroupId].size());
-    print("Num Objects",    level.objects[nextReadGroupId].capacity());
+    print("Group ID", (int)headerInfo.objectId);
+    print("Num Properties", level.propLayouts[(int)headerInfo.objectId].size());
+    print("Num Objects",    level.objects[(int)headerInfo.objectId].capacity());
     std::cout << "Properties: \n";
-    for (auto p : level.propLayouts[nextReadGroupId]) {
+    for (auto p : level.propLayouts[(int)headerInfo.objectId]) {
         print("\tProperty", (int)p);
     }
 

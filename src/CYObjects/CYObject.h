@@ -26,5 +26,5 @@ struct CYWall {
     Position endPoint;
     uint8_t floor;
 
-    PropertyList m_properties;
+    PropertyList properties;
 };

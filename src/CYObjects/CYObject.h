@@ -1,10 +1,13 @@
 #pragma once 
 
-#include <any>
+#include <vector>
+#include <variant>
+#include <cstdint>
+#include <string>
 
 class BinaryFileReader;
 
-using PropertyList = std::vector<std::any>;
+using PropertyList = std::vector<std::variant<uint8_t, uint32_t, std::string>>;
 
 struct Position {
     int16_t x = 0;
@@ -24,6 +27,4 @@ struct CYWall {
     uint8_t floor;
 
     PropertyList m_properties;
-
-    void deserialize(BinaryFileReader& buffer);
-}
+};

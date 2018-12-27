@@ -30,6 +30,25 @@ CYLevel loadLevel(const std::string& file) {
             >> level.theme 
             >> level.weather;
 
+    while (true) {
+        uint8_t id;
+        reader >> id;
+        switch ((ObjectID)id) {
+            case ObjectID::Wall:
+
+                break;
+
+            case ObjectID::Floor:
+
+                break;
+
+            default:
+
+                break;
+        }
+        break;
+    }
+
     print("Version", (int)fileVersion);
     print("Game Name", level.levelName);
     print("Game Author", level.creatorName);

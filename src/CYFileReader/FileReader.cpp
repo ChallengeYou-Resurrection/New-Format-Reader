@@ -11,6 +11,25 @@ namespace {
     void print(const char* msg, const T& val) {
         std::cout << msg << ": <" << val << ">\n";
     }
+
+    uint8_t readObjectGroupHeader(BinaryFileReader& reader, CYLevel& level) {
+        uint8_t     objectId;
+        uint8_t     numProperties;
+        uint32_t    numObjects;
+        reader >> objectId >> numProperties >> numObjects;
+
+
+        level.propLayouts[objectId].reserve(numProperties);
+        level.objects    [objectId].reserve((size_t)numObjects);
+
+        for (int i = 0; i < numProperties; i++) {
+            uint8_t propertyId;
+            reader >> propertyId;
+            level.propLayouts[objectId].push_back((PropertyType)propertyId);
+        }
+
+        return objectId;
+    }
 } 
 
 
@@ -30,24 +49,7 @@ CYLevel loadLevel(const std::string& file) {
             >> level.theme 
             >> level.weather;
 
-    while (true) {
-        uint8_t id;
-        reader >> id;
-        switch ((ObjectID)id) {
-            case ObjectID::Wall:
-
-                break;
-
-            case ObjectID::Floor:
-
-                break;
-
-            default:
-
-                break;
-        }
-        break;
-    }
+    auto nextReadGroupId = readObjectGroupHeader(reader, level);
 
     print("Version", (int)fileVersion);
     print("Game Name", level.levelName);
@@ -56,5 +58,14 @@ CYLevel loadLevel(const std::string& file) {
     print("Music", (int)level.music);
     print("Theme", (int)level.theme);
     print("Weather", (int)level.weather);
+
+    print("Group ID", (int)nextReadGroupId);
+    print("Num Properties", level.propLayouts[nextReadGroupId].size());
+    print("Num Objects",    level.objects[nextReadGroupId].capacity());
+    std::cout << "Properties: \n";
+    for (auto p : level.propLayouts[nextReadGroupId]) {
+        print("\tProperty", (int)p);
+    }
+
     return level;
 }

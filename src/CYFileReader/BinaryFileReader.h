@@ -24,7 +24,6 @@ class BinaryFileReader {
 
         friend BinaryFileReader& operator >>(BinaryFileReader& reader, u16& n) {
             reader.readNumber(n);
-            n = bswap_16(n);
             return reader;
         }
 
@@ -36,22 +35,40 @@ class BinaryFileReader {
         friend BinaryFileReader& operator >>(BinaryFileReader& reader, std::string& str) {
             uint32_t length = 0;
             reader >> length;
-            str.assign(reader.m_readPtr, reader.m_readPtr + length);
+            str.assign(
+                reader.m_buffer.data() + reader.readIndex, 
+                reader.m_buffer.data() + reader.readIndex + length);
             reader.incrementReader(length);
             return reader;
         }
+
+        friend BinaryFileReader& operator >>(BinaryFileReader& reader, i16& n) {
+            reader.readNumber(n);
+            return reader;
+        }
+
+        template <typename T>
+        friend BinaryFileReader& operator >>(BinaryFileReader& reader, T& val) {
+            val.deserialize(reader);
+            return reader;
+        }
+
+        explicit operator bool() {
+            return readIndex < m_buffer.size();
+        }
+
 
     private:
         void incrementReader(size_t amount);
 
         template<typename T>
         void readNumber(T& n) {
-            std::memcpy(reinterpret_cast<char*>(&n), m_readPtr, sizeof(T));
+            std::memcpy(reinterpret_cast<char*>(&n), m_buffer.data() + readIndex, sizeof(T));
             incrementReader(sizeof(T));
         }
 
         std::vector<unsigned char> m_buffer;
-        unsigned char* m_readPtr;
+        size_t readIndex = 0;
 };
 
 BinaryFileReader& operator >>(BinaryFileReader& reader, u8& n);

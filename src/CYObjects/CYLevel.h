@@ -15,4 +15,5 @@ struct CYLevel {
     uint8_t weather;
 
     std::array<std::vector<CYObject>, (size_t)ObjectID::NUM_OBJECTS> objects;
+    std::array<std::vector<PropertyType>, (size_t)PropertyType::NUM_PROP_TYPES> propLayouts;
 };

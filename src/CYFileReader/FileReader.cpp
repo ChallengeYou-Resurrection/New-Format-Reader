@@ -115,13 +115,6 @@ CYLevel loadLevel(const std::string& file) {
             >> level.music 
             >> level.theme 
             >> level.weather;
-        print("Version", (int)fileVersion);
-        print("Game Name", level.levelName);
-        print("Game Author", level.creatorName);
-        print("Floors", (int)level.numFloors);
-        print("Music", (int)level.music);
-        print("Theme", (int)level.theme);
-        print("Weather", (int)level.weather);
 
     while(reader) {
         auto headerInfo = readObjectGroupHeader(reader, level);
@@ -139,8 +132,6 @@ CYLevel loadLevel(const std::string& file) {
                 break;
         }
     }
-
-    printPropertyList(level, ObjectID::Diamond);
 
     return level;
 }

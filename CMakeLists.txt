@@ -13,6 +13,7 @@ set(SOURCES
 	src/Utilities.cpp
 	src/CYFileReader/BinaryFileReader.cpp 
 	src/CYFileReader/FileReader.cpp 
+	src/CYObjects/CYObject.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

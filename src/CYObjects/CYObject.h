@@ -18,7 +18,10 @@ struct Position {
 
 
 struct CYObject {
+    Position position; 
+    uint8_t floor;
 
+    PropertyList properties;
 };
 
 struct CYWall {
@@ -26,5 +29,14 @@ struct CYWall {
     Position endPoint;
     uint8_t floor;
 
+    PropertyList properties;
+};
+
+struct CYFloor {
+    Position vertexA;
+    Position vertexB;
+    Position vertexC;
+    Position vertexD;
+    uint8_t floor;
     PropertyList properties;
 };

@@ -15,6 +15,7 @@ struct CYLevel {
     uint8_t weather;
 
     std::vector<CYWall> walls;
+    std::vector<CYFloor> floors;
     std::array<std::vector<CYObject>, (size_t)ObjectID::NUM_OBJECTS> objects;
     std::array<std::vector<PropertyType>, (size_t)ObjectID::NUM_OBJECTS> propLayouts;
 };

@@ -24,7 +24,6 @@ class BinaryFileReader {
 
         friend BinaryFileReader& operator >>(BinaryFileReader& reader, u16& n) {
             reader.readNumber(n);
-            n = bswap_16(n);
             return reader;
         }
 
@@ -40,6 +39,18 @@ class BinaryFileReader {
             reader.incrementReader(length);
             return reader;
         }
+
+        friend BinaryFileReader& operator >>(BinaryFileReader& reader, i16& n) {
+            reader.readNumber(n);
+            return reader;
+        }
+
+        template <typename T>
+        friend BinaryFileReader& operator >>(BinaryFileReader& reader, T& val) {
+            val.deserialize(reader);
+            return reader;
+        }
+
 
     private:
         void incrementReader(size_t amount);

@@ -1,8 +1,10 @@
 #pragma once 
 
-#include <variant>
+#include <any>
 
 class BinaryFileReader;
+
+using PropertyList = std::vector<std::any>;
 
 struct Position {
     int16_t x = 0;
@@ -19,8 +21,9 @@ struct CYObject {
 struct CYWall {
     Position beginPoint;
     Position endPoint;
-    std::vector<std::string> properties;
     uint8_t floor;
+
+    PropertyList m_properties;
 
     void deserialize(BinaryFileReader& buffer);
 }

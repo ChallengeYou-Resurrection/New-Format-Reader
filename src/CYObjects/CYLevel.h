@@ -1,7 +1,6 @@
 #pragma once
 
 #include <array>
-#include <vector>
 
 #include "CYObjectId.h"
 #include "CYObject.h"

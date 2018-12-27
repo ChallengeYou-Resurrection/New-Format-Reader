@@ -36,8 +36,8 @@ class BinaryFileReader {
             uint32_t length = 0;
             reader >> length;
             str.assign(
-                reader.m_buffer().data + reader.readIndex, 
-                reader.m_buffer().data + reader.readIndex + length);
+                reader.m_buffer.data() + reader.readIndex, 
+                reader.m_buffer.data() + reader.readIndex + length);
             reader.incrementReader(length);
             return reader;
         }

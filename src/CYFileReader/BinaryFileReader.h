@@ -37,7 +37,7 @@ class BinaryFileReader {
             uint32_t length = 0;
             reader >> length;
             str.assign(reader.m_readPtr, reader.m_readPtr + length);
-            incrementReader(length);
+            reader.incrementReader(length);
             return reader;
         }
 

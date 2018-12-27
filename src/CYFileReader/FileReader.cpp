@@ -20,12 +20,22 @@ CYLevel loadLevel(const std::string& file) {
     auto data = readFileIntoVec(file);
     BinaryFileReader reader (std::move(data));
 
+    //Read metadata;
     uint8_t fileVersion;
-    reader >> fileVersion >> level.levelName >> level.creatorName;
+    reader >> fileVersion;
+    reader  >> level.levelName
+            >> level.creatorName
+            >> level.numFloors
+            >> level.music 
+            >> level.theme 
+            >> level.weather;
 
     print("Version", (int)fileVersion);
     print("Game Name", level.levelName);
     print("Game Author", level.creatorName);
-
+    print("Floors", (int)level.numFloors);
+    print("Music", (int)level.music);
+    print("Theme", (int)level.theme);
+    print("Weather", (int)level.weather);
     return level;
 }
